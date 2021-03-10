@@ -124,8 +124,14 @@ function showStats(data) {
                         "downloaded " + formatNumber(asset.download_count) + "&nbsp;times. " +
                         "Last&nbsp;updated&nbsp;on&nbsp;" + lastUpdate + "</li>";
 
-                    totalDownloadCount += asset.download_count;
-                    releaseDownloadCount += asset.download_count;
+                    const isSha512 = asset.name.indexOf('.sha512') > 0;
+                    const isBlockMap= asset.name.indexOf('.blockmap') > 0;
+                    const isUpdaterFile = ['latest-mac.yml','latest-linux.yml', 'latest.yml'].includes(asset.name);
+                    const excluded = isUpdaterFile || isSha512 || isBlockMap;
+                    if (!excluded) {
+                        totalDownloadCount += asset.download_count;
+                        releaseDownloadCount += asset.download_count;
+                    }
                 });
             }
 
